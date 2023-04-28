@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "name": "pokedexcard",
+      "slug": "pokedexcard",
+      "version": "0.1.0",
+      "android": {
+        "package": "com.pokedexcard"
+      }
+    }
+  }
+}

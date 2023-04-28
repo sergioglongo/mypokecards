@@ -1,17 +1,18 @@
 import "react-native-dotenv";
 
+
 export default {
 	expo: {
 		name: "boilerplate",
 		slug: "boilerplate",
 		version: "1.0.0",
 		orientation: "portrait",
-		icon: ".src/assets/images/icon.png",
+		icon: "./src/assets/images/icon.png",
 		userInterfaceStyle: "light",
 		splash: {
-			image: ".src/assets/images/splash.png",
-			resizeMode: "contain",
-			backgroundColor: "#ffffff",
+			image: "./src/assets/images/splash.png",
+			resizeMode: "cover",
+			backgroundColor: "#ff0000",
 		},
 		updates: {
 			fallbackToCacheTimeout: 0,
@@ -22,8 +23,8 @@ export default {
 		},
 		android: {
 			adaptiveIcon: {
-				foregroundImage: ".src/assets/images/adaptive-icon.png",
-				backgroundColor: "#FFFFFF",
+				foregroundImage: "./src/assets/images/adaptive-icon.png",
+				backgroundColor: "#FF00FF",
 			},
 		},
 		web: {

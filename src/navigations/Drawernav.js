@@ -12,7 +12,7 @@ export default function Drawernav() {
 	return (
 		<Drawer.Navigator>
 			<Drawer.Screen
-				name="Home"
+				name="BottomNav"
 				component={Bottomtabnav}
 				options={{ title: "Home Page" }}
 			/>
