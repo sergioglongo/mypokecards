@@ -4,23 +4,26 @@ import Navigation from './src/navigations/Navigation'
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import { DataProvider } from './src/hooks';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 export default function App() {
 
-	useEffect(() => {
-		SplashScreen.preventAutoHideAsync();
-		setTimeout(() => {
-			SplashScreen.hideAsync();
+  const queryClient = new QueryClient();
 
-		}, 3000);
-	}, [])
-	// load custom fonts
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
+    setTimeout(() => {
+      SplashScreen.hideAsync();
+    }, 3000);
+  }, []);
 
-	return (
-		<Provider store={store}>
-			<DataProvider>
-				<Navigation />
-			</DataProvider>
-		</Provider>
-	);
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <DataProvider>
+          <Navigation />
+        </DataProvider>
+      </QueryClientProvider>
+    </Provider>
+  );
 }
