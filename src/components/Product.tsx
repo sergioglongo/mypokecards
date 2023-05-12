@@ -1,17 +1,26 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import Block from './Block';
 import Image from './Image';
 import Text from './Text';
-import {IProduct} from '../constants/types';
-import {useTheme} from '../hooks/';
+import { IProduct } from '../constants/types';
+import { useTheme } from '../hooks/';
 
-const Product = ({image, title, type, linkLabel, description}: IProduct) => {
-  const {assets, colors, sizes} = useTheme();
+const Product = ({
+  image, 
+  title, 
+  type, 
+  linkLabel, 
+  description, 
+  height, 
+  width,
+  onPress 
+}: IProduct) => {
+  const { assets, colors, sizes } = useTheme();
 
   const isHorizontal = type !== 'vertical';
-  const CARD_WIDTH = (sizes.width - sizes.padding * 2 - sizes.sm) / 2;
+  const CARD_WIDTH = (sizes.width - sizes.padding * 2 );
 
   return (
     <Block
@@ -19,12 +28,14 @@ const Product = ({image, title, type, linkLabel, description}: IProduct) => {
       flex={0}
       row={isHorizontal}
       marginBottom={sizes.sm}
-      width={isHorizontal ? CARD_WIDTH * 2 + sizes.sm : CARD_WIDTH}>
+      width={width || CARD_WIDTH}
+      height={height || 'auto'}
+      >
       <Image
         resizeMode="cover"
-        source={{uri: image}}
+        source={{ uri: image }}
         style={{
-          height: isHorizontal ? 114 : 110,
+          height: isHorizontal ? CARD_WIDTH / 2 : 110,
           width: !isHorizontal ? '100%' : sizes.width / 2.435,
         }}
       />
@@ -33,25 +44,26 @@ const Product = ({image, title, type, linkLabel, description}: IProduct) => {
         justify="space-between"
         paddingLeft={isHorizontal ? sizes.sm : 0}
         paddingBottom={isHorizontal ? sizes.s : 0}>
-        <Text p marginBottom={sizes.sm} bold>
-          {title}
-        </Text>
-        <Text p marginBottom={sizes.s}>
-          {description}
-        </Text>
-        <TouchableOpacity>
-          <Block row flex={0} align="center">
-            <Text
-              p
-              color={colors.link}
-              semibold
-              size={sizes.linkSize}
-              marginRight={sizes.s}>
-              {linkLabel || "Ver mas"}
-            </Text>
-            <Image source={assets.arrow} color={colors.link} />
-          </Block>
-        </TouchableOpacity>
+        <Block>
+          <Text p marginBottom={sizes.sm} bold>
+            {title}
+          </Text>
+          <Text p marginBottom={sizes.s}>
+            {description}
+          </Text>
+        </Block>
+        <Block row flex={1} justify='flex-end' width={'100%'} align='flex-end'>
+          <TouchableOpacity onPress={onPress}>
+              <Text
+                p
+                color={colors.link}
+                semibold
+                size={sizes.linkSize}
+                marginRight={sizes.s}>
+                {linkLabel || "Detalles"}
+              </Text>
+          </TouchableOpacity>
+        </Block>
       </Block>
     </Block>
   );

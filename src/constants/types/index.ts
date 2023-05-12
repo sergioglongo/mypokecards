@@ -52,6 +52,9 @@ export interface IProduct {
   timestamp?: number;
   linkLabel?: string;
   type: 'vertical' | 'horizontal';
+  height?: string;
+  width?: string;
+  onPress?: (event?: any) => void;
 }
 export interface ILocation {
   id?: number;
