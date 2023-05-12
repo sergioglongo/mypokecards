@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
+
 const window = Dimensions.get('window');
 
 const CardSlider = ({
@@ -7,6 +8,7 @@ const CardSlider = ({
   autoplay,
   interval,
   style,
+  onEndReached,
   ...props
 }) => {
   const [numOfCards, setNumOfCards] = useState(children?.length);
@@ -14,6 +16,10 @@ const CardSlider = ({
   const slider = useRef(null);
   let canAutoMove = true;
   let t = null;
+
+  useEffect(() => {
+    setNumOfCards(children?.length);
+  }, [children]);
 
   useEffect(() => {
     if (autoplay) {
@@ -40,9 +46,16 @@ const CardSlider = ({
   const scroll = (event) => {
     canAutoMove = false;
     const offsetX:number = event.nativeEvent.contentOffset.x;
-    const page = offsetX / (window.width - 30);
+    const page = Math.ceil(offsetX / (window.width - 30));
+    console.log("page: ", page, "numOfCards: ", numOfCards-1);
+    
     if (page === numOfCards - 1) {
+      console.log("entra en if");
+      
       setPosition(0);
+      if (onEndReached) {
+        onEndReached(numOfCards - 1);
+      }
     } else {
       setPosition(page + 1);
     }
@@ -88,7 +101,6 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     width: window.width - 30,
-    // height:'100%',
     marginHorizontal: 15,
     overflow: 'visible',
   },

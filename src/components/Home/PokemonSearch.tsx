@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, TouchableOpacity} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Block, Product, Text } from "../../components";
 import { useLazyGetPokemonByIdOrNameQuery } from "../../services/API/pokedexApi";
@@ -20,6 +20,7 @@ export default function PokemonSearch() {
     const [found, setFound] = useState(false);
     const [pokemonSearchText, setPokemonSearchText] = useState("");
     const [{ sizes }] = useState(globalVariables);
+    const buttonRef = useRef<TouchableOpacity>(null);
 
     useEffect(() => {
         if (isSuccessPokemonFounded) {
@@ -70,7 +71,11 @@ export default function PokemonSearch() {
                             value={pokemonSearchText}
                             onChangeText={(text) => setPokemonSearchText(text)}
                             style={{ marginVertical: sizes.sm, width: '60%', alignSelf: 'center' }}
-                        />
+                            returnKeyType="send"
+                            onSubmitEditing={() => {
+                                buttonRef.current?.focus()
+                                onPress()
+                              }}/>
 
                     </Block>
                     <Button icon="camera" mode="contained" onPress={onPress}>

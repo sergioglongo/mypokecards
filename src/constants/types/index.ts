@@ -54,6 +54,7 @@ export interface IProduct {
   type: 'vertical' | 'horizontal';
   height?: string;
   width?: string;
+  onPress?: (event?: any) => void;
 }
 export interface ILocation {
   id?: number;

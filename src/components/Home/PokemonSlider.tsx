@@ -11,6 +11,7 @@ const fetchPosts = async (page = 0, limit = PAGE_SIZE) => {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${page}`);
     const data = await response.json();
     const pokemonList = data.results;
+    console.log("Carga de pokemonList");
 
     const pokemonDetailsPromises = pokemonList.map(async (pokemon) => {
         const detailsResponse = await fetch(pokemon.url);
@@ -26,7 +27,7 @@ const fetchPosts = async (page = 0, limit = PAGE_SIZE) => {
     };
 };
 
-function PokemonList() {
+function PokemonList({showDetails}) {
 
     const {
         data,
@@ -45,6 +46,13 @@ function PokemonList() {
         }
     );
 
+    const loadMore = () => {
+        console.log("Carga de loadMore");
+        
+        if (!isFetchingNextPage) {
+          fetchNextPage();
+        }
+      };
 
     if (isLoading) {
         return <Text>Cargando...</Text>;
@@ -55,16 +63,19 @@ function PokemonList() {
         .flatMap((page) => page.pokemonList)
         .map((pokemon, index) => {
             const details = data.pages.flatMap((page) => page.pokemonDetails)[index];
-
+            const showDetailsPokemon = () => {
+                showDetails(details);
+            }
             return (
 
                 <Product
                     id={details?.id}
                     title={details?.name}
-                    description={`Peso: ${details?.weight}}`}
+                    description={`Peso: ${details?.weight}`}
                     image={details?.sprites?.other?.["official-artwork"]?.front_default}
                     timestamp={details?.weight}
                     linkLabel={"Ver más"}
+                    onPress={showDetailsPokemon}
                     type={"horizontal"}
                     height={'auto'}
                     key={details.name}
@@ -79,30 +90,19 @@ function PokemonList() {
             {/* <View style={styles.cardList}>{pokemonListShow}</View> */}
             <CardSlider
                 autoplay={false}
-                interval={5000}
+                interval={3000}
                 style={undefined}
+                onEndReached={loadMore}
             >
                 {pokemonListShow}
             </CardSlider>
-            {hasNextPage && (
-                <TouchableOpacity
-                    onPress={() => fetchNextPage()}
-                    style={styles.button}
-                    disabled={isFetchingNextPage}
-                >
-                    <Text style={styles.buttonText}>
-                        {isFetchingNextPage ? 'Cargando más...' : 'Cargar más'}
-                    </Text>
-                </TouchableOpacity>
-            )}
-        </View>
+         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center'
     },

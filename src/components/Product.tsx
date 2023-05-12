@@ -7,7 +7,16 @@ import Text from './Text';
 import { IProduct } from '../constants/types';
 import { useTheme } from '../hooks/';
 
-const Product = ({ image, title, type, linkLabel, description, height, width }: IProduct) => {
+const Product = ({
+  image, 
+  title, 
+  type, 
+  linkLabel, 
+  description, 
+  height, 
+  width,
+  onPress 
+}: IProduct) => {
   const { assets, colors, sizes } = useTheme();
 
   const isHorizontal = type !== 'vertical';
@@ -44,7 +53,7 @@ const Product = ({ image, title, type, linkLabel, description, height, width }: 
           </Text>
         </Block>
         <Block row flex={1} justify='flex-end' width={'100%'} align='flex-end'>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onPress}>
               <Text
                 p
                 color={colors.link}
